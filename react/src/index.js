@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Demo from './Demo';
+import Dagligvare from './Dagligvare';
+import './basic.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Demo />
+    <Dagligvare />
   </React.StrictMode>
 );
