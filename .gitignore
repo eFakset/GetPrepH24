@@ -1,0 +1,6 @@
+react/node_modules
+react/package-lock.json
+
+server/node_modules
+server/package-lock.json
+server/.env
