@@ -1,6 +1,7 @@
 import React from "react";
 const status = require("../Common.js").checkStatus;
 
+// Se også Demo.js
 export default function ServerInfo() 
 {
     const [serverData, setServerData] = React.useState(null);
@@ -12,7 +13,7 @@ export default function ServerInfo()
             .then(status)
             .then((response) => response.json())
             .then((data) => setServerData(data.message.ServerInfo))
-            .catch(error => setErrorMsg("Feil ved les av kommuner: " + error)); 
+            .catch(error => setErrorMsg("Feil ved ping server: " + error)); 
     }, []);
 
     if (errorMsg)

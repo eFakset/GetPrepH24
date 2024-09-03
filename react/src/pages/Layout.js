@@ -3,6 +3,9 @@ import { Outlet } from "react-router-dom";
 import MenuItemLeft from "../pagelets/MenuItemLeft";
 import ServerInfo from "../pagelets/ServerInfo";
 
+/* Venstre navigasjon 
+    MenyItemLeft er opprettet (av Ellen) for å gjenbruke logikk
+*/
 export default function Layout()
 {
     const [selectedItemName, setSelectedItemName] = React.useState("/");

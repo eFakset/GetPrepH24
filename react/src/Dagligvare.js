@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Municipalities from "./pages/Municipalities";
 import NoPage from "./pages/NoPage";
 
+// "Hoved"-element. Kalles fra index.js
+// BrowserRouter osv: Layout.js styrer overordnet struktur inkl. venstre meny
 export default function Dagligvare() 
 { 
     return (
