@@ -19,7 +19,7 @@ export default function Municipalities() {
             .then(status)
             .then((response) => response.json())
             .then((data) => setMunicipalities(data.message))
-            .catch(error => setErrorMsg("Feil ved ping server: " + error)); 
+            .catch(error => setErrorMsg("Feil ved les kommuner: " + error)); 
       }, []);
 // Returnerer HTML (for Outlet, se Layout.js)      
 // Hvis errorMsg er utfylt, skal den vises, ellers kommunetabell med heading
