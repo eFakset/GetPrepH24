@@ -4,6 +4,7 @@ USE gp24;
 
 DROP TABLE IF EXISTS vare;
 DROP TABLE IF EXISTS varegruppe;
+DROP TABLE IF EXISTS kunde;
 DROP TABLE IF EXISTS kommune;
 DROP TABLE IF EXISTS fylke;
 
@@ -25,6 +26,20 @@ PRIMARY KEY (kommune_nr)
 ALTER TABLE kommune
  ADD CONSTRAINT FK_kommune_fylke FOREIGN KEY FK_kommune_fylke (fylke_nr)
     REFERENCES fylke (fylke_nr)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT;
+
+/****** Object:  Table kunde ******/
+CREATE TABLE kunde (
+	kunde_nr SMALLINT NOT NULL DEFAULT 0,
+	kunde_nv varchar(255) NOT NULL,
+	kommune_nr char(4) NOT NULL,
+ PRIMARY KEY (kunde_nr)
+);
+
+ALTER TABLE kunde
+ ADD CONSTRAINT FK_kunde_kommune FOREIGN KEY FK_kunde_kommune (kommune_nr)
+    REFERENCES kommune (kommune_nr)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT;
     
@@ -50,7 +65,7 @@ ALTER TABLE vare
     ON DELETE RESTRICT
     ON UPDATE RESTRICT;
 
-insert into fylke values ('03', 'Oslo');
+insert into fylke values ('00', 'Ikke oppgitt');
 insert into fylke (fylke_nr, fylke_nv) values ('39', 'Vestfold');
 insert into fylke (fylke_nr, fylke_nv) values ('40', 'Telemark');
 insert into kommune values ('3901', 'Horten', '39');
@@ -61,7 +76,7 @@ insert into kommune values ('3909', 'Larvik', '39');
 insert into kommune values ('3911', 'Færder', '39');
 
 insert into kommune values 
-('0301', 'Oslo', '03'),
+('0000', 'Ikke oppgitt', '00'),
 ('4001', 'Porsgrunn', '40'),
 ('4003', 'Skien', '40'),
 ('4005', 'Notodden', '40'),
@@ -600,3 +615,24 @@ insert into vare values(875, 'Yoghurt naturell 500g', 9);
 insert into vare values(876, 'Zendium fresh&white', 27);
 insert into vare values(877, 'Zendium tannkrem fresh', 27);
 insert into vare values(878, 'Økologisk løk gul strømpe', 4);
+
+insert into kunde values(0, 'Ukjent kunde', '0000');
+insert into kunde values(1, 'Sveinung Fredly', '3907');
+insert into kunde values(2, 'Lillian Solvik', '4003');
+insert into kunde values(3, 'Even Gjermundsen', '4014');
+insert into kunde values(4, 'Signe Bønsnes', '3909');
+insert into kunde values(5, 'Laura Klokkerplassen', '3909');
+insert into kunde values(6, 'Petter Thomassen', '3901');
+insert into kunde values(7, 'Syver Bønsnes', '3909');
+insert into kunde values(8, 'Søren Tvetenstrand', '4012');
+insert into kunde values(9, 'Anders Eriksen', '4001');
+insert into kunde values(10, 'Oluf Berg', '3909');
+insert into kunde values(11, 'Bjarne Gustavsen', '4014');
+insert into kunde values(12, 'Hilda Fuglesang', '4014');
+insert into kunde values(13, 'Peder Kristoffersen', '3905');
+insert into kunde values(14, 'Hanna Frøshaug', '4001');
+insert into kunde values(15, 'Torvald Nilsen', '3909');
+insert into kunde values(16, 'Nikolai Olsen', '3907');
+insert into kunde values(17, 'Gudrun Abrahamsen', '4003');
+insert into kunde values(18, 'Karen Strøm', '4012');
+insert into kunde values(19, 'Emma Hval', '3907');

@@ -7,11 +7,10 @@ export default function Articles() {
     document.title = "Dagligvare - varer";
 // Hook: setArticles([arg]), resultat: articles     
     const [articles, setArticles] = React.useState(null);
-    const [selectedCategory, setSelectedCategory] = React.useState(-1);
+    const [selectedCategory, setSelectedCategory] = React.useState(-1); // -1 blir stående som verdi
     const [errorMsg, setErrorMsg] = React.useState(null);
 
 /* Henter varer: prefiks /server -> leter etter http:localhost:3001/varer (se webpack.config.js)
-   Henter på nytt hvis brukeren velger en annen varegruppe 
    Kaller status (Common.js.checkStatus)  
    Hvis status != Error -> response.json() -> setArticles()
    Hvis status == Error -> kaller setErrorMsg()
@@ -22,7 +21,7 @@ export default function Articles() {
             .then((response) => response.json())
             .then((data) => setArticles(data.message))
             .catch(error => setErrorMsg("Feil ved les varer: " + error)); 
-      }, [selectedCategory]);
+      }, []);
 // Returnerer HTML (for Outlet, se Layout.js)      
 // Hvis errorMsg er utfylt, skal den vises, ellers varetabell med heading
 // ArticleTable bygges med articles, resultatet av setArticles
@@ -35,7 +34,7 @@ export default function Articles() {
                 <table align="center">
                     <tbody>
                     <tr><td><CategoryCb setSelectedCategory={setSelectedCategory}/></td></tr>
-                    <tr><td><ArticleTable articles={articles} /></td></tr>
+                    <tr><td><ArticleTable selectedCategory={selectedCategory} articles={articles} /></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -78,8 +77,8 @@ function CategoryCb({setSelectedCategory})
 // JSONCategory: Category/Varegruppe som JSON-string    
         categories.forEach((JSONCategory) =>
         {
-            let store = new Item(JSONCategory.id, JSONCategory.name, false);
-            options.push(<ItemOption item={store} key={store.id}/>);   
+            let category = new Item(JSONCategory.id, JSONCategory.name, false);
+            options.push(<ItemOption item={category} key={category.id}/>);   
         });
     }
 
@@ -103,17 +102,20 @@ function ItemOption({item})
 }
 
 // Bygger varetabell
-function ArticleTable({ articles }) 
+function ArticleTable({ selectedCategory, articles }) 
 {
     const rows = [];
 
-// Løper gjennom articles    
+// Løper gjennom articles
     if (articles)
     {
         articles.forEach((article) => 
         {
-// Bygger en ItemRow (i ItemRow.js) og legger til i array rows            
-            rows.push(<ArticleRow item={article} key={article.id} />);
+            // Bygger en ItemRow (i ItemRow.js) og legger til i array rows   
+            if (selectedCategory === -1 || article.categoryId == selectedCategory)
+            {
+               rows.push(<ArticleRow item={article} key={article.id} />);
+            }
         });
     }
 

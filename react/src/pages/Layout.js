@@ -20,6 +20,8 @@ export default function Layout()
                             <tbody>
                                 <tr><MenuItemLeft itemName="/" itemText="Hjem" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><MenuItemLeft itemName="/municipalities" itemText="Kommuner" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/search" itemText="Adressesøk" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/customers" itemText="Kunder" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><MenuItemLeft itemName="/articles" itemText="Varer" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><td><ServerInfo/></td></tr>
                             </tbody>  
