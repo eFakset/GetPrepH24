@@ -20,9 +20,12 @@ export default function Layout()
                             <tbody>
                                 <tr><MenuItemLeft itemName="/" itemText="Hjem" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><MenuItemLeft itemName="/municipalities" itemText="Kommuner" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/stores" itemText="Butikker" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/articlecategories" itemText="Varegrupper" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/articles" itemText="Varer" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><MenuItemLeft itemName="/search" itemText="Adressesøk" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><MenuItemLeft itemName="/customers" itemText="Kunder" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
-                                <tr><MenuItemLeft itemName="/articles" itemText="Varer" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
+                                <tr><MenuItemLeft itemName="/sales" itemText="Gjennomførte salg" selectedItemName={selectedItemName} setSelectedItemName={setSelectedItemName}/></tr>
                                 <tr><td><ServerInfo/></td></tr>
                             </tbody>  
                         </table>

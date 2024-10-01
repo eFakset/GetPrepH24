@@ -207,6 +207,126 @@ app.put('/oppdaterkunde', function(req, res)
     });
 });
 
+app.get('/butikker', function(req, res) 
+{
+    // Definisjon: items/Store.js    
+    const sql = 'select butikk_nr as id, butikk_nv as name, kommune_nv as municipalityName, fylke_nv as countyName' +
+    ' from butikk, kommune, fylke' +
+    ' where butikk.kommune_nr = kommune.kommune_nr' +
+    ' and kommune.fylke_nr = fylke.fylke_nr' +
+    ' order by fylke.fylke_nr, kommune.kommune_nr';  
+
+    connection.query(sql, function (err, stores) 
+    {
+        if (err)
+        {
+            console.log("FEIL ved les butikker: " + err.sqlMessage);
+            res.status(500).send();
+        }
+        else
+            res.json({ message: stores });
+    });
+});
+
+app.get('/perioder', function(req, res) 
+{
+    const sql = "select year(tidspunkt) * 100 + month(tidspunkt) as id, min(tidspunkt) as firstsale from handel group by year(tidspunkt) * 100 + month(tidspunkt) order by 1 desc"
+    connection.query(sql, function (err, rows) 
+    {
+        if (err)
+        {
+            console.log("FEIL ved les perioder: " + err.sqlMessage);
+            res.status(500).send();
+        }
+        else
+            res.json({ message: rows });
+    });
+});
+
+app.get('/handler', function(req, res)
+{
+    let sql = "select handel_nr as id, kjede_nv as chainName, butikk_nv as storeName, kunde_nv as customerName, tidspunkt as ts, handel_bel as amount" +
+                    " from handel, butikk, kjede, kunde" +
+                    " where handel.butikk_nr = butikk.butikk_nr and handel.kunde_nr = kunde.kunde_nr and butikk.kjede_nr = kjede.kjede_nr";
+
+    var q = url.parse(req.url, true);
+    var qdata = q.query;
+
+    const storeid = qdata.storeid;
+    const customerid = qdata.customerid;
+    const period = qdata.period;
+
+    let args = [];
+    let idx = 0;
+
+    if (storeid)
+    {
+        args[idx] = storeid;
+        sql = sql + " and handel.butikk_nr = ?";
+        idx++;
+    }
+    if (customerid)
+    {
+        args[idx] = customerid;
+        sql = sql + " and handel.kunde_nr = ?";
+        idx++;
+    }
+    if (period)
+    {
+        args[idx] = period;
+        sql = sql + " and (year(tidspunkt) * 100 + month(tidspunkt)) = ?";
+    }
+    sql = sql + " order by id desc";
+
+    connection.query(sql, args, function (err, rows)
+    {
+        if (err)
+        {
+            console.log("FEIL ved les handler: " + err.sqlMessage);
+            res.status(500).send();
+        }
+        else
+            res.json({ message: rows });
+    });
+});
+
+app.get('/jsonbong', function(req, res) 
+{
+/* Henter all informasjon om en handel i én JSON-struktur:  
+   Handel som JSON_OBJECT
+   Varelinjer og bonus som et JSON_ARRAYAGG av JSON_OBJECT-er
+*/
+    var q = url.parse(req.url, true);
+    var qdata = q.query;
+    const saleid = qdata.saleid;
+
+    let sql = "select JSON_OBJECT('id', handel.handel_nr, 'storeId', butikk.butikk_nr, 'storeName', butikk.butikk_nv, 'registerNo', kasse_nr, 'chainName', kjede_nv, 'customerId', kunde.kunde_nr," +
+    "'customerName', kunde_nv, 'ts', tidspunkt, 'amount', handel_bel, " +
+    "'articleLines'," +
+    "(select JSON_ARRAYAGG(" +
+    "JSON_OBJECT('id', vare_nr, 'articleId', vare_nr, 'articleName', vare_nv, 'unitCount', enhet_ant, 'amount', varelinje_bel))" +
+    " from vvarelinje where handel_nr = ?" +
+    "), 'bonus'," +
+    "(select JSON_ARRAYAGG(JSON_OBJECT('id', id, 'name', bonus_nv, 'amount', bonus_bel))" +
+    "from vbonus where handel_nr = ?" +
+    ")) as Sale from handel, butikk, kjede, kunde" +
+    " where handel.butikk_nr = butikk.butikk_nr and butikk.kjede_nr = kjede.kjede_nr and handel.kunde_nr = kunde.kunde_nr" +
+    " and handel_nr = ?" + 
+    " group by handel_nr";
+
+// saleid oppgis 3 ganger fordi den opptrer 3 ganger i SQL
+    connection.query(sql, [saleid, saleid, saleid], function (err, purchase) 
+    {
+        if (err)
+        {
+            console.log("FEIL ved les jsonbong: " + err.sqlMessage);
+            res.status(500).send();
+        }
+        else
+            res.json({ message: purchase});
+
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Server lytter på port ${PORT}`);

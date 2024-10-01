@@ -5,6 +5,9 @@ import Home from "./pages/Home";
 import Municipalities from "./pages/Municipalities";
 import Articles from "./pages/Articles";
 import Customers from "./pages/Customers";
+import Sales from "./pages/Sales";
+import ArticleCategories from "./pages/ArticleCategories";
+import Stores from "./pages/Stores";
 import AddressSearch from "./pages/AddressSearch";
 import NoPage from "./pages/NoPage";
 
@@ -21,7 +24,10 @@ export default function Dagligvare()
               <Route path="municipalities" element={<Municipalities />} />
               <Route path="search" element={<AddressSearch />} />
               <Route path="articles" element={<Articles />} />
+              <Route path="articlecategories" element={<ArticleCategories />} />
               <Route path="customers" element={<Customers />} />
+              <Route path="sales" element={<Sales />} />
+              <Route path="stores" element={<Stores />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
